@@ -35,9 +35,29 @@
             70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
         }
+        /* Popup Animation */
+        #mainPopup {
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 relative">
+
+    <!-- Main Popup -->
+    <div id="mainPopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 hidden px-4">
+        <div class="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all">
+            <div class="relative">
+                <img src="https://i.ibb.co/xKzbSg16/11111.png" alt="이벤트 팝업" class="w-full h-auto block">
+                <!-- Close buttons -->
+                <div class="flex justify-between items-center bg-gray-900 text-white text-sm p-3">
+                    <button onclick="closePopupToday()" class="hover:text-yellow-400 transition">오늘 하루 보지 않기</button>
+                    <button onclick="closePopup()" class="font-bold hover:text-red-400 transition flex items-center">
+                        닫기 <span class="ml-1 text-lg">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 glass-morphism shadow-sm">
@@ -131,11 +151,11 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Product Card 1 -->
+                <!-- Product Card 1: iPhone 16 Pro (Updated with Image) -->
                 <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300">
-                    <div class="h-64 bg-gray-200 flex items-center justify-center relative">
-                        <span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">HOT</span>
-                        <div class="text-gray-400 font-bold">iPhone 16 Pro</div>
+                    <div class="h-64 bg-white flex items-center justify-center relative overflow-hidden">
+                        <span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">HOT</span>
+                        <img src="https://i.ibb.co/xKzbSg16/11111.png" alt="iPhone 16 Pro" class="w-full h-full object-contain p-4 hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-6">
                         <h4 class="text-lg font-bold mb-2">아이폰 16 Pro</h4>
@@ -150,7 +170,6 @@
                         <span class="absolute top-4 left-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">BEST</span>
                         <div class="text-gray-400 font-bold">Galaxy S24 Ultra</div>
                     </div>
-                    <img src="https://i.ibb.co/xKzbSg16/11111.png" alt="11111" border="0">
                     <div class="p-6">
                         <h4 class="text-lg font-bold mb-2">갤럭시 S26 울트라</h4>
                         <div class="text-sm text-gray-500 line-through mb-1">1,690,000원</div>
@@ -269,6 +288,32 @@
     <script>
         // 수정된 채널톡 연결 링크
         const CHANNEL_TALK_URL = "https://49yp8.channel.io";
+
+        // 팝업 로직
+        window.onload = function() {
+            const popup = document.getElementById('mainPopup');
+            const hideUntil = localStorage.getItem('hidePopupUntil');
+            const now = new Date().getTime();
+
+            if (!hideUntil || now > parseInt(hideUntil)) {
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
+            }
+        };
+
+        function closePopup() {
+            const popup = document.getElementById('mainPopup');
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+        }
+
+        function closePopupToday() {
+            const now = new Date();
+            // 내일 오전 0시로 설정
+            const expiration = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0).getTime();
+            localStorage.setItem('hidePopupUntil', expiration);
+            closePopup();
+        }
 
         function goToChannelTalk() {
             window.open(CHANNEL_TALK_URL, '_blank');
