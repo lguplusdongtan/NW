@@ -3,345 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(주)엔더블유 - 휴대폰 전문 할인매장</title>
+    <title>안성 LG 유플러스 전문 매장 | 최고의 혜택</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            scroll-behavior: smooth;
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .uplus-pink { color: #E6007E; }
+        .uplus-bg-pink { background-color: #E6007E; }
+        .gradient-overlay {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
         }
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        /* 채널톡 버튼 애니메이션 */
+        @keyframes pulse-pink {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 0, 126, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(230, 0, 126, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 0, 126, 0); }
         }
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .ch-button {
+            animation: pulse-pink 2s infinite;
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+
+        /* 팝업 스타일 */
+        #qrModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .pulse-yellow {
-            box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
-        }
-        /* Popup Animation */
-        #mainPopup {
-            transition: opacity 0.3s ease-in-out;
+        .modal-content {
+            background-color: white;
+            padding: 10px;
+            border-radius: 15px;
+            position: relative;
+            max-width: 90%;
+            max-height: 80%;
+            text-align: center;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 relative">
+<body class="bg-gray-50 text-gray-800">
 
-    <!-- Main Popup -->
-    <div id="mainPopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 hidden px-4">
-        <div class="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all">
-            <div class="relative">
-                <img src="https://i.ibb.co/xKzbSg16/11111.png" alt="이벤트 팝업" class="w-full h-auto block">
-                <!-- Close buttons -->
-                <div class="flex justify-between items-center bg-gray-900 text-white text-sm p-3">
-                    <button onclick="closePopupToday()" class="hover:text-yellow-400 transition">오늘 하루 보지 않기</button>
-                    <button onclick="closePopup()" class="font-bold hover:text-red-400 transition flex items-center">
-                        닫기 <span class="ml-1 text-lg">&times;</span>
-                    </button>
-                </div>
-            </div>
+    <div id="qrModal">
+        <div class="modal-content">
+            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl">&times; 닫기</button>
+            <img src="https://i.ibb.co/Tq4PLWKs/QR.png" alt="한결QR" border="0" class="rounded-lg shadow-2xl max-h-[70vh]">
+            <p class="mt-4 font-bold text-gray-800">QR을 스캔하여 특별 혜택을 확인하세요!</p>
         </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-morphism shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-black text-blue-600">(주)<span class="text-gray-800">엔더블유</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8 font-medium">
-                    <a href="#special" class="hover:text-blue-600 transition">특가안내</a>
-                    <a href="#models" class="hover:text-blue-600 transition">최신모델</a>
-                    <a href="#reviews" class="hover:text-blue-600 transition">구매후기</a>
-                    <a href="#contact" class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">상담신청</a>
-                </div>
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="uplus-bg-pink text-white p-1 rounded font-bold text-xl">U+</div>
+                <span class="font-bold text-lg tracking-tight">안성 공식인증 대리점</span>
             </div>
+            <nav class="hidden md:flex space-x-8 font-medium">
+                <a href="#home" class="hover:text-[#E6007E] transition">홈</a>
+                <a href="#offers" class="hover:text-[#E6007E] transition">특별혜택</a>
+                <a href="#location" class="hover:text-[#E6007E] transition">오시는길</a>
+            </nav>
+            <a href="tel:010-0000-0000" class="uplus-bg-pink text-white px-5 py-2 rounded-full font-bold hover:opacity-90 transition">
+                전화상담
+            </a>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="hero-gradient pt-32 pb-20 px-4 text-white overflow-hidden">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2 mb-12 md:mb-0">
-                <span class="inline-block bg-yellow-400 text-blue-900 px-3 py-1 rounded-full text-sm font-bold mb-4">전국 최저가 보장제</span>
-                <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6">
-                    오늘이 가장 쌉니다!<br>
-                    <span class="text-yellow-300">최신폰 최대 지원금</span>
-                </h1>
-                <p class="text-lg md:text-xl opacity-90 mb-8 leading-relaxed">
-                    복잡한 통신비 계산은 이제 그만.<br>
-                    최적의 요금제와 최대 할인 혜택을 한 번에 제안해 드립니다.
-                </p>
-                <div class="flex flex-col sm:flex-row flex-wrap gap-4">
-                    <a href="#contact" class="bg-white text-blue-600 text-center px-6 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition shadow-lg flex-1 sm:flex-none">무료 견적 받기</a>
-                    <button onclick="goToChannelTalk()" class="bg-yellow-400 text-blue-900 text-center px-6 py-4 rounded-xl font-bold text-lg hover:bg-yellow-300 transition shadow-lg flex-1 sm:flex-none">바로 상담가기</button>
-                    <a href="#special" class="border-2 border-white text-center px-6 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition flex-1 sm:flex-none">오늘의 특가 보기</a>
-                </div>
-            </div>
-            <div class="md:w-1/2 relative flex justify-center">
-                <div class="relative w-72 h-72 md:w-96 md:h-96 bg-blue-400 rounded-full filter blur-3xl opacity-30 absolute -top-10"></div>
-                <!-- Smartphone Mockup SVG -->
-                <svg viewBox="0 0 200 400" class="w-64 md:w-80 animate-float relative z-10 drop-shadow-2xl">
-                    <rect x="10" y="10" width="180" height="380" rx="20" fill="#111" />
-                    <rect x="15" y="15" width="170" height="370" rx="15" fill="#222" />
-                    <rect x="20" y="20" width="160" height="360" rx="10" fill="#333" />
-                    <text x="100" y="180" text-anchor="middle" fill="#555" font-size="12" font-weight="bold">NW SMARTPHONE</text>
-                    <circle cx="100" cy="30" r="4" fill="#444" />
-                </svg>
+    <section id="home" class="relative h-screen flex items-center justify-center text-white pt-16">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
+                 alt="Store Front" class="w-full h-full object-cover">
+            <div class="absolute inset-0 gradient-overlay"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 z-10 text-center">
+            <span class="inline-block px-4 py-1 border border-[#E6007E] text-[#E6007E] rounded-full mb-4 font-bold bg-white/10">
+                안성 지역 만족도 1위 매장
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                안성에서 휴대폰 살 땐,<br>
+                <span class="uplus-pink">U+ 안성 전문점</span>이 정답입니다.
+            </h1>
+            <p class="text-lg md:text-xl mb-10 opacity-90">
+                비교할 수 없는 최저가 보장, 최대 지원금 혜택을 약속합니다.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="tel:010-0000-0000" class="uplus-bg-pink px-8 py-4 rounded-lg text-xl font-bold hover:scale-105 transition-transform">
+                    <i class="fas fa-phone-alt mr-2"></i> 즉시 전화 상담
+                </a>
+                <a href="https://49yp8.channel.io" target="_blank" class="bg-[#FEE500] text-[#3c1e1e] px-8 py-4 rounded-lg text-xl font-bold hover:bg-[#fada0a] transition flex items-center justify-center">
+                    <i class="fas fa-comment mr-2"></i> 실시간 채팅 상담
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Feature Section -->
     <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div class="p-8 rounded-3xl bg-blue-50 hover:shadow-xl transition group">
-                <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="text-center group">
+                    <div class="w-20 h-20 uplus-bg-pink/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#E6007E] transition-colors">
+                        <i class="fas fa-hand-holding-usd text-3xl uplus-pink group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">안성 최대 지원금</h3>
+                    <p class="text-gray-600">공시지원금에 추가 15% 대리점 혜택까지! 안성 최고 수준의 보조금을 지원합니다.</p>
                 </div>
-                <h3 class="text-xl font-bold mb-4">최대 지원금 보장</h3>
-                <p class="text-gray-600">공시지원금은 물론, 매장 추가 지원금까지 아낌없이 담아드립니다.</p>
-            </div>
-            <div class="p-8 rounded-3xl bg-green-50 hover:shadow-xl transition group">
-                <div class="w-16 h-16 bg-green-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
+                <div class="text-center group">
+                    <div class="w-20 h-20 uplus-bg-pink/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#E6007E] transition-colors">
+                        <i class="fas fa-sync-alt text-3xl uplus-pink group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">중고폰 최고가 보상</h3>
+                    <p class="text-gray-600">사용하시던 기존 폰, 어디보다 정직하고 높은 가격으로 즉시 보상해 드립니다.</p>
                 </div>
-                <h3 class="text-xl font-bold mb-4">공식 대리점 정품</h3>
-                <p class="text-gray-600">100% 미개봉 새제품만 취급하며, 공식 서비스센터 A/S가 가능합니다.</p>
-            </div>
-            <div class="p-8 rounded-3xl bg-purple-50 hover:shadow-xl transition group">
-                <div class="w-16 h-16 bg-purple-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
+                <div class="text-center group">
+                    <div class="w-20 h-20 uplus-bg-pink/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#E6007E] transition-colors">
+                        <i class="fas fa-user-shield text-3xl uplus-pink group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">1:1 맞춤 컨설팅</h3>
+                    <p class="text-gray-600">가족결합, 제휴카드 할인 등 복잡한 요금제를 가장 유리하게 설계해 드립니다.</p>
                 </div>
-                <h3 class="text-xl font-bold mb-4">당일 즉시 개통</h3>
-                <p class="text-gray-600">재고 걱정 끝! 원하는 모델을 현장에서 바로 확인하고 개통하세요.</p>
             </div>
         </div>
     </section>
 
-    <!-- Special Offers -->
-    <section id="special" class="py-20 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4">
+    <section id="offers" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-black mb-4">이달의 인기 모델 특가</h2>
-                <p class="text-gray-600 text-lg">지금 가장 혜택이 좋은 휴대폰을 만나보세요.</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">이번 달 안성점 단독 이벤트</h2>
+                <div class="w-20 h-1 uplus-bg-pink mx-auto"></div>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Product Card 1: iPhone 16 Pro (Updated with Image) -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300">
-                    <div class="h-64 bg-white flex items-center justify-center relative overflow-hidden">
-                        <span class="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">HOT</span>
-                        <img src="https://i.ibb.co/xKzbSg16/11111.png" alt="iPhone 16 Pro" class="w-full h-full object-contain p-4 hover:scale-105 transition duration-500">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="iPhone" class="h-full w-full object-cover">
                     </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold mb-2">아이폰 16 Pro</h4>
-                        <div class="text-sm text-gray-500 line-through mb-1">1,550,000원</div>
-                        <div class="text-2xl font-black text-blue-600 mb-4">상담 후 결정</div>
-                        <button onclick="goToChannelTalk()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition">특가 문의</button>
-                    </div>
-                </div>
-                <!-- Product Card 2 -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300">
-                    <div class="h-64 bg-gray-200 flex items-center justify-center relative">
-                        <span class="absolute top-4 left-4 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">BEST</span>
-                        <div class="text-gray-400 font-bold">Galaxy S24 Ultra</div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold mb-2">갤럭시 S26 울트라</h4>
-                        <div class="text-sm text-gray-500 line-through mb-1">1,690,000원</div>
-                        <div class="text-2xl font-black text-blue-600 mb-4">상담 후 결정</div>
-                        <button onclick="goToChannelTalk()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition">특가 문의</button>
+                    <div class="p-8 md:w-1/2 flex flex-col justify-center">
+                        <span class="text-[#E6007E] font-bold mb-2">LIMITED TIME</span>
+                        <h4 class="text-2xl font-bold mb-4">아이폰 15 시리즈<br>역대급 할인</h4>
+                        <p class="text-gray-600 mb-6">지금 변경 시 에어팟 프로 증정 및 기기값 0원 혜택(조건 충족 시)</p>
+                        <a href="https://49yp8.channel.io" target="_blank" class="inline-block text-center border-2 border-[#E6007E] text-[#E6007E] py-2 px-6 rounded font-bold hover:bg-[#E6007E] hover:text-white transition">혜택 문의하기</a>
                     </div>
                 </div>
-                <!-- Product Card 3 -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300">
-                    <div class="h-64 bg-gray-200 flex items-center justify-center relative">
-                        <span class="absolute top-4 left-4 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">SALE</span>
-                        <div class="text-gray-400 font-bold">Galaxy Z Flip 6</div>
+                
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                             alt="Galaxy" class="h-full w-full object-cover">
                     </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold mb-2">갤럭시 Z 플립 6</h4>
-                        <div class="text-sm text-gray-500 line-through mb-1">1,480,000원</div>
-                        <div class="text-2xl font-black text-blue-600 mb-4">상담 후 결정</div>
-                        <button onclick="goToChannelTalk()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition">특가 문의</button>
-                    </div>
-                </div>
-                <!-- Product Card 4 -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300">
-                    <div class="h-64 bg-gray-200 flex items-center justify-center relative">
-                        <div class="text-gray-400 font-bold">iPhone 15</div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold mb-2">아이폰 15</h4>
-                        <div class="text-sm text-gray-500 line-through mb-1">1,250,000원</div>
-                        <div class="text-2xl font-black text-blue-600 mb-4">상담 후 결정</div>
-                        <button onclick="goToChannelTalk()" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition">특가 문의</button>
+                    <div class="p-8 md:w-1/2 flex flex-col justify-center">
+                        <span class="text-[#E6007E] font-bold mb-2">FAMILY PLAN</span>
+                        <h4 class="text-2xl font-bold mb-4">갤럭시 S24 시리즈<br>가족결합 추가 할인</h4>
+                        <p class="text-gray-600 mb-6">인터넷+TV 동시 가입 시 현금 사은품 안성 지역 최대 지급</p>
+                        <a href="https://49yp8.channel.io" target="_blank" class="inline-block text-center border-2 border-[#E6007E] text-[#E6007E] py-2 px-6 rounded font-bold hover:bg-[#E6007E] hover:text-white transition">혜택 문의하기</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Consultation Form Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="bg-blue-600 rounded-3xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
-                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-500 rounded-full opacity-50"></div>
-                <div class="relative z-10">
-                    <h2 class="text-3xl font-black mb-4">무료 상담 신청</h2>
-                    <p class="mb-8 opacity-90 text-lg">번호이동, 기기변경, 요금제 설계까지 전문가가 5분 안에 연락드립니다.</p>
-                    
-                    <form id="contactForm" onsubmit="handleSubmit(event)" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1">성함</label>
-                                <input type="text" id="name" required class="w-full p-4 rounded-xl text-gray-900 bg-white focus:ring-2 focus:ring-yellow-400 outline-none" placeholder="홍길동">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1">연락처</label>
-                                <input type="tel" id="phone" required class="w-full p-4 rounded-xl text-gray-900 bg-white focus:ring-2 focus:ring-yellow-400 outline-none" placeholder="010-0000-0000">
-                            </div>
+    <section id="location" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-6">오시는 길</h2>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-map-marker-alt uplus-pink mt-1"></i>
+                            <p class="text-lg">경기도 안성시 중앙로 (안성시내 핵심 요충지)<br><span class="text-gray-500 text-sm">안성시장 인근 LG 유플러스 공식인증 대리점</span></p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">희망 모델 / 통신사</label>
-                            <input type="text" id="model" class="w-full p-4 rounded-xl text-gray-900 bg-white focus:ring-2 focus:ring-yellow-400 outline-none" placeholder="예: 아이폰16 / SKT 기기변경">
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-clock uplus-pink mt-1"></i>
+                            <p class="text-lg">영업시간: 10:00 ~ 20:30 (연중무휴)</p>
                         </div>
-                        <div class="flex items-start space-x-2 mt-4">
-                            <input type="checkbox" id="agree" required class="mt-1">
-                            <label for="agree" class="text-xs opacity-80 cursor-pointer">개인정보 수집 및 이용(상담 목적)에 동의합니다.</label>
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-phone-alt uplus-pink mt-1"></i>
+                            <p class="text-lg">대표번호: 031-XXX-XXXX</p>
                         </div>
-                        <button type="submit" class="w-full bg-yellow-400 text-blue-900 py-5 rounded-xl font-black text-xl hover:bg-yellow-300 transition shadow-lg mt-6">
-                            최저가 혜택 지금 바로 받기
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-[#E6007E] mb-8">
+                        <p class="font-medium text-lg mb-2">🚗 주차 안내</p>
+                        <p class="text-gray-600">매장 방문 고객님께는 인근 공영주차장 주차권을 드립니다. 편하게 방문해주세요!</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="tel:010-0000-0000" class="flex-1 text-center uplus-bg-pink text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:opacity-90 transition">
+                            상담 전화하기
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 w-full h-[450px] bg-gray-100 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center relative border border-gray-200">
+                    <div class="text-center p-8">
+                        <i class="fas fa-map-marked-alt text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-400">실제 지도 API (네이버/카카오) 연동 영역</p>
+                    </div>
+                    <div class="absolute bottom-6 right-6 flex flex-col space-y-3">
+                        <button class="bg-[#FEE500] text-black px-6 py-3 rounded-xl font-bold shadow-xl flex items-center hover:scale-105 transition-transform">
+                            <i class="fas fa-comment mr-2"></i> 카카오맵 길찾기
                         </button>
-                    </form>
+                        <button class="bg-[#03C75A] text-white px-6 py-3 rounded-xl font-bold shadow-xl flex items-center hover:scale-105 transition-transform">
+                            <i class="fas fa-navigation mr-2"></i> 네이버 길찾기
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
-            <div id="successMessage" class="hidden mt-8 p-6 bg-green-100 border border-green-200 text-green-700 rounded-2xl text-center">
-                <h4 class="text-xl font-bold mb-2">상담 신청이 완료되었습니다!</h4>
-                <p>담당자가 곧 확인 후 연락드리겠습니다. 잠시만 기다려주세요.</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-800 pb-8 mb-8">
-                <div class="mb-6 md:mb-0">
-                    <span class="text-2xl font-black text-blue-400">(주)엔더블유</span>
-                    <p class="mt-2 text-gray-400 text-sm">믿고 맡기는 우리 동네 1등 휴대폰 매장</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">회사소개</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">개인정보처리방침</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">이용약관</a>
-                </div>
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center space-x-2 mb-6">
+                <div class="uplus-bg-pink text-white px-2 py-1 rounded font-bold text-sm">U+</div>
+                <span class="font-bold text-white tracking-tight">LG 유플러스 안성 공식인증 대리점</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-500">
-                <div>
-                    <p>대표: 김철수 | 사업자등록번호: 123-45-67890</p>
-                    <p>주소: 서울특별시 강남구 테헤란로 123 엔더블유 타워 1F</p>
-                </div>
-                <div class="md:text-right">
-                    <p class="text-white font-bold text-lg mb-1">고객센터: 1588-0000</p>
-                    <p>상담시간: 평일 10:00 - 20:00 / 토요일 11:00 - 18:00</p>
-                </div>
+            <p class="max-w-md mx-auto mb-8 text-sm leading-relaxed">
+                안성 지역 휴대폰 판매 1위 대리점으로서 고객님의 통신비를 끝까지 책임지겠습니다.<br>
+                본 매장은 LG 유플러스의 공식 인증을 받은 대리점입니다.
+            </p>
+            <div class="text-xs border-t border-gray-800 pt-8">
+                <p>&copy; 2024 U+ Anseong Branch. All rights reserved.</p>
             </div>
-            <p class="mt-8 text-center text-xs text-gray-600">&copy; 2024 (주)엔더블유 All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Floating Channel Talk Button -->
-    <div class="fixed bottom-6 right-6 z-[999]">
-        <button onclick="goToChannelTalk()" class="pulse-yellow bg-yellow-400 text-blue-900 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:bg-yellow-300 hover:scale-110 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-        </button>
+    <div class="fixed bottom-8 right-8 z-[100] flex flex-col items-end space-y-4">
+        <div class="bg-white text-gray-800 px-4 py-2 rounded-2xl shadow-xl text-sm font-bold border border-gray-100 hidden md:block mb-1 transform translate-y-2">
+            안성점 1:1 상담 중 💬
+        </div>
+        <a href="https://49yp8.channel.io" target="_blank" class="ch-button w-16 h-16 uplus-bg-pink rounded-full shadow-2xl flex items-center justify-center text-white text-2xl hover:scale-110 transition-transform cursor-pointer">
+            <i class="fas fa-comment-dots"></i>
+        </a>
     </div>
 
     <script>
-        // 수정된 채널톡 연결 링크
-        const CHANNEL_TALK_URL = "https://jz9zk.channel.io";
-
-        // 팝업 로직
-        window.onload = function() {
-            const popup = document.getElementById('mainPopup');
-            const hideUntil = localStorage.getItem('hidePopupUntil');
-            const now = new Date().getTime();
-
-            if (!hideUntil || now > parseInt(hideUntil)) {
-                popup.classList.remove('hidden');
-                popup.classList.add('flex');
-            }
-        };
-
-        function closePopup() {
-            const popup = document.getElementById('mainPopup');
-            popup.classList.add('hidden');
-            popup.classList.remove('flex');
+        // 팝업 닫기 함수
+        function closeModal() {
+            document.getElementById('qrModal').style.display = 'none';
         }
 
-        function closePopupToday() {
-            const now = new Date();
-            // 내일 오전 0시로 설정
-            const expiration = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0).getTime();
-            localStorage.setItem('hidePopupUntil', expiration);
-            closePopup();
-        }
-
-        function goToChannelTalk() {
-            window.open(CHANNEL_TALK_URL, '_blank');
-        }
-
-        function scrollToContact() {
-            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('name').focus();
-        }
-
-        function handleSubmit(event) {
-            event.preventDefault();
-            
-            const btn = event.target.querySelector('button');
-            btn.innerText = "신청 중...";
-            btn.disabled = true;
-
-            setTimeout(() => {
-                document.getElementById('contactForm').classList.add('hidden');
-                document.getElementById('successMessage').classList.remove('hidden');
-                
-                console.log("Lead captured for (주)엔더블유:", {
-                    name: document.getElementById('name').value,
-                    phone: document.getElementById('phone').value,
-                    model: document.getElementById('model').value
-                });
-            }, 1000);
-        }
+        // 스크롤 부드럽게
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if(targetId === "#") return;
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
